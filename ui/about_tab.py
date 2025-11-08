@@ -14,7 +14,7 @@ class AboutTab(QWidget):
         layout.setAlignment(Qt.AlignCenter)
 
         # Author label
-        author_label = QLabel("Author: Â© Ã‚m DÆ°Æ¡ng TiÃªn Sinh 2025")
+        author_label = QLabel("Author: © Âm Dương Tiên Sinh 2025")
         author_label.setStyleSheet("font-size: 16px; font-weight: bold;")
         author_label.setAlignment(Qt.AlignCenter)
 

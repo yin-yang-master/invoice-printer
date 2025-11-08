@@ -13,7 +13,7 @@ class MainWindow(QMainWindow):
         self.setup_ui()
 
     def setup_ui(self):
-        self.setWindowTitle("Pháº§n má»m in hÃ³a Ä‘Æ¡n")
+        self.setWindowTitle("Phần mềm in hóa đơn")
         self.resize(1000, 700)
 
         # Create tab widget
@@ -25,8 +25,8 @@ class MainWindow(QMainWindow):
         self.about_tab = AboutTab()
 
         # Add tabs
-        self.tabs.addTab(self.invoice_tab, "Xuáº¥t hÃ³a Ä‘Æ¡n")
-        self.tabs.addTab(self.settings_tab, "CÃ i Ä‘áº·t")
-        self.tabs.addTab(self.about_tab, "ThÃ´ng tin")
+        self.tabs.addTab(self.invoice_tab, "Xuất hóa đơn")
+        self.tabs.addTab(self.settings_tab, "Cài đặt")
+        self.tabs.addTab(self.about_tab, "Thông tin")
 
         self.setCentralWidget(self.tabs)

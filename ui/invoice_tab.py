@@ -1,5 +1,6 @@
 ﻿from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
+    QComboBox,
     QFrame,
     QHBoxLayout,
     QLabel,
@@ -31,21 +32,21 @@ class ProductRow(QWidget):
 
         # Product name
         self.product_name = QLineEdit()
-        self.product_name.setPlaceholderText("TÃªn sáº£n pháº©m")
+        self.product_name.setPlaceholderText("Tên sản phẩm")
         layout.addWidget(self.product_name, 3)
 
         # Quantity
         self.quantity = QLineEdit()
-        self.quantity.setPlaceholderText("Sá»‘ lÆ°á»£ng")
+        self.quantity.setPlaceholderText("Số lượng")
         layout.addWidget(self.quantity, 1)
 
         # Unit price
         self.unit_price = QLineEdit()
-        self.unit_price.setPlaceholderText("ÄÆ¡n giÃ¡")
+        self.unit_price.setPlaceholderText("Đơn giá")
         layout.addWidget(self.unit_price, 1)
 
         # Delete button
-        self.delete_btn = QPushButton("XÃ³a")
+        self.delete_btn = QPushButton("Xóa")
         self.delete_btn.setFixedWidth(60)
         self.delete_btn.clicked.connect(self.on_delete)
         layout.addWidget(self.delete_btn)
@@ -80,17 +81,49 @@ class InvoiceTab(QWidget):
     def setup_ui(self):
         main_layout = QVBoxLayout(self)
 
+        # Invoice type section
+        type_layout = QHBoxLayout()
+        type_layout.addWidget(QLabel("Loại hóa đơn:"))
+        self.invoice_type = QComboBox()
+        self.invoice_type.addItems([
+            "PHIẾU XUẤT HÓA ĐƠN KIÊM BẢO HÀNH",
+            "HÓA ĐƠN BÁN LẺ",
+            "PHIẾU XUẤT KHO"
+        ])
+        type_layout.addWidget(self.invoice_type, 1)
+        type_layout.addStretch(2)
+        main_layout.addLayout(type_layout)
+        main_layout.addSpacing(10)
+
+        # Customer info section
+        customer_layout = QHBoxLayout()
+        
+        # Customer name
+        customer_layout.addWidget(QLabel("Tên khách hàng:"))
+        self.customer_name = QLineEdit()
+        self.customer_name.setPlaceholderText("Nhập tên khách hàng")
+        customer_layout.addWidget(self.customer_name, 1)
+        
+        # Customer address
+        customer_layout.addWidget(QLabel("Địa chỉ:"))
+        self.customer_address = QLineEdit()
+        self.customer_address.setPlaceholderText("Nhập địa chỉ khách hàng")
+        customer_layout.addWidget(self.customer_address, 2)
+        
+        main_layout.addLayout(customer_layout)
+        main_layout.addSpacing(10)
+
         # Header labels
         header_layout = QHBoxLayout()
         header_layout.addWidget(QLabel("STT"), 0)
 
-        product_label = QLabel("TÃªn sáº£n pháº©m")
+        product_label = QLabel("Tên sản phẩm")
         header_layout.addWidget(product_label, 3)
 
-        quantity_label = QLabel("Sá»‘ lÆ°á»£ng")
+        quantity_label = QLabel("Số lượng")
         header_layout.addWidget(quantity_label, 1)
 
-        price_label = QLabel("ÄÆ¡n giÃ¡")
+        price_label = QLabel("Đơn giá")
         header_layout.addWidget(price_label, 1)
 
         # Empty space for delete button column
@@ -116,7 +149,7 @@ class InvoiceTab(QWidget):
         # Add row button (centered below rows, inside scroll area)
         add_button_layout = QHBoxLayout()
         add_button_layout.addStretch()
-        self.add_row_btn = QPushButton("ThÃªm")
+        self.add_row_btn = QPushButton("Thêm")
         self.add_row_btn.clicked.connect(self.add_row)
         self.add_row_btn.setFixedWidth(100)
         add_button_layout.addWidget(self.add_row_btn)
@@ -127,7 +160,7 @@ class InvoiceTab(QWidget):
         main_layout.addWidget(scroll)
 
         # Export invoice button
-        self.export_btn = QPushButton("Xuáº¥t hÃ³a Ä‘Æ¡n")
+        self.export_btn = QPushButton("Xuất hóa đơn")
         self.export_btn.clicked.connect(self.export_invoice)
         self.export_btn.setFixedHeight(40)
         main_layout.addWidget(self.export_btn)
@@ -180,5 +213,12 @@ class InvoiceTab(QWidget):
         if not invoice_data:
             return
 
-        dialog = PreviewDialog(invoice_data, parent=self)
+        customer_info = {
+            "name": self.customer_name.text(),
+            "address": self.customer_address.text()
+        }
+        
+        invoice_type = self.invoice_type.currentText()
+
+        dialog = PreviewDialog(invoice_data, customer_info, invoice_type, parent=self)
         dialog.exec()
